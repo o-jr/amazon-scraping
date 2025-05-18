@@ -34,6 +34,7 @@ class MlSpider(scrapy.Spider):
 
         if self.page_count < self.max_pages:
             # Select the 'href' from the next page button
+            #next_page = response.css('li.s-pagination-item.s-pagination-next.s-pagination-button.s-pagination-button-accessibility.s-pagination-separator a::attr(href)').get()#attribut href
             next_page = response.css('a.s-pagination-item.s-pagination-next.s-pagination-button::attr(href)').get()
             
             if next_page:
