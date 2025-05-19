@@ -31,5 +31,5 @@ conn = sqlite3.connect('../ml-scraping/data/database.db')
 df.to_sql('ml_items', conn, if_exists='replace', index=False)
 conn.close()
 
-print(df).head(5)
+#print(df.head())
 print("Data saved to SQLite database.")
