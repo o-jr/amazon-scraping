@@ -1,4 +1,4 @@
-# Web Scraping e Análise de Produtos Amazon (Óculos Masculinos)
+# Web Scraping e Análise de Produtos Amazon
 
 Este projeto consiste em uma solução completa de web scraping para coletar dados detalhados de páginas de produtos na Amazon, focando especificamente na categoria de óculos masculinos. O projeto demonstra habilidades em:
 
