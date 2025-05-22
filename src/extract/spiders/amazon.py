@@ -2,7 +2,7 @@ import scrapy
 from urllib.parse import urljoin
 
 class MlSpider(scrapy.Spider):
-    name = "mercadolivre"
+    name = "amazon"
     #allowed_domains = ["lista.mercadolivre.com.br"]
     #start_urls = ["https://lista.mercadolivre.com.br/oculos-masculino"]
 
