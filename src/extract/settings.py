@@ -13,7 +13,7 @@ SPIDER_MODULES = ["extract.spiders"]
 NEWSPIDER_MODULE = "extract.spiders"
 
 USER_AGENT = 'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'
-DOWNLOAD_DELAY = 5 
+DOWNLOAD_DELAY = 10
 RANDOMIZE_DOWNLOAD_DELAY = True
 DOWNLOAD_TIMEOUT = 540
 
@@ -26,16 +26,17 @@ ROBOTSTXT_OBEY = False
 
 EXTENSIONS = {
     'scrapy.extensions.telnet.TelnetConsole': None,
+    #'spidermon.contrib.extensions.SpiderMonitor': 500,
     'scrapy.extensions.closespider.CloseSpider': 1
 }
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 1
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -51,7 +52,19 @@ EXTENSIONS = {
 #    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 #    "Accept-Language": "en",
 #}
-
+DEFAULT_REQUEST_HEADERS = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Accept-Encoding': 'gzip, deflate, br', # 'br' for brotli, 'gzip' for gzip compression
+    'Referer': 'https://www.amazon.com.br/', # Mimic coming from Amazon itself
+    'Connection': 'keep-alive',
+    'Upgrade-Insecure-Requests': '1',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-User': '?1',
+    'TE': 'trailers',
+}
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
@@ -78,14 +91,14 @@ EXTENSIONS = {
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
+AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-#AUTOTHROTTLE_START_DELAY = 5
+AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
-#AUTOTHROTTLE_MAX_DELAY = 60
+AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
-#AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 # Enable showing throttling stats for every response received:
 #AUTOTHROTTLE_DEBUG = False
 
@@ -96,6 +109,9 @@ EXTENSIONS = {
 #HTTPCACHE_DIR = "httpcache"
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
+
+HTTPERROR_ALLOWED_CODES = [503]
+RETRY_HTTP_CODES = [500, 502, 503, 504, 522, 524, 408, 429]
 
 # Set settings whose default value is deprecated to a future-proof value
 FEED_EXPORT_ENCODING = "utf-8"

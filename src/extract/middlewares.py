@@ -2,6 +2,7 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import random
 
 from scrapy import signals
 
@@ -98,3 +99,15 @@ class ExtractDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
+
+class CustomProxyMiddleware:
+    def __init__(self, settings):
+        self.proxies = settings.getlist('PROXY_LIST') # Get proxies from settings
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings)
+
+    def process_request(self, request, spider):
+        if self.proxies:
+            proxy = random.choice(self.proxies)
