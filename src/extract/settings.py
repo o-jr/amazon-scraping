@@ -24,12 +24,27 @@ ADDONS = {}
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
+SPIDERMON_ENABLED = True
+
 EXTENSIONS = {
     'scrapy.extensions.telnet.TelnetConsole': None,
+    #'spidermon.contrib.scrapy.extensions.SpiderMonitor': 500,
+    #'spidermon.contrib.scrapy.extensions.SpiderStatsMonitor': 500,
+    'spidermon.contrib.scrapy.extensions.Spidermon': 500,
     #'spidermon.contrib.extensions.SpiderMonitor': 500,
-    'scrapy.extensions.closespider.CloseSpider': 1
+    
+    #'extract.extensions.closespider.CloseSpider': 1
 }
 
+SPIDERMON_SPIDER_CLOSE_MONITORS = (
+    #'extract.spiders.amazon.SpiderMonitor',
+    'extract.monitors.SpiderCloseMonitorSuite',
+    #'monitors.SpiderCloseMonitorSuite',
+    #'extract.spiders.main.AmazonMonitorSuite',  # Corrected path
+
+)
+
+CUSTOM_MIN_STATUS_200 = 10
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 1
 

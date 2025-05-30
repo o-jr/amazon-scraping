@@ -105,7 +105,7 @@ with column1:
         with col1:
             st.subheader("Média por Marca")
             df_non_zero_prices = df[df['price'] > 0]
-            price_by_brand = df_non_zero_prices.groupby('brand')['price'].mean().sort_values(ascending=False).head(10)
+            price_by_brand = df_non_zero_prices.groupby('brand')['price'].mean().round(2).sort_values(ascending=False).head(10)
             st.bar_chart(price_by_brand, height= 400)
         with col2:
             #price_range = st.slider("Prices", 10, 100, (13, 50)) # Use the slider to filter the average prices
@@ -162,7 +162,7 @@ st.divider()
 
 
 
-cc1, joker, cc2 = st.columns([1.5,0.5,4])
+cc1, joker, cc2 = st.columns([1.3,0.3,5])
 
 cc1.write("### Marcas mais avaliadas")
 unique_brands = df.groupby('brand')['rating'].mean().reset_index()

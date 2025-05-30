@@ -2,7 +2,11 @@ import scrapy
 import random
 from urllib.parse import urljoin
 from scrapy.exceptions import IgnoreRequest
-
+#from spidermon import Monitor, MonitorSuite, monitors
+#from spidermon.contrib.scrapy.extensions import Spidermon
+#from spidermon.contrib.extensions import SpiderMonitor
+#from spidermon.contrib.monitors.mixins.stats import SpidermonStatsMixin
+#from spidermon.contrib.scrapy.monitors.base import BaseStatMonitor
 
 USER_AGENT_LIST = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -23,7 +27,10 @@ class MlSpider(scrapy.Spider):
     def start_requests(self):
             for url in self.start_urls:
                 yield scrapy.Request(url, headers={'User-Agent': random.choice(USER_AGENT_LIST)}, callback=self.parse)
-                
+
+
+    
+
     def parse(self, response): # callback function parser q trabaLHA C A RESPOSTA DO GET
         if response.status == 503:
             self.logger.info("Received 503 status, retrying after delay.")
@@ -59,24 +66,24 @@ class MlSpider(scrapy.Spider):
             'page': self.page_count
             }
              
-
-        if self.page_count < self.max_pages:
-            next_page = next_page = response.css('a.s-pagination-next::attr(href)').get()
-            #next_page = response.css('a.s-pagination-item.s-pagination-next.s-pagination-button::attr(href)').get() # Select the 'href' from the next page button
+############ NEXT PAGES ###########################
+        # if self.page_count < self.max_pages:
+        #     next_page = next_page = response.css('a.s-pagination-next::attr(href)').get()
+        #     #next_page = response.css('a.s-pagination-item.s-pagination-next.s-pagination-button::attr(href)').get() # Select the 'href' from the next page button
             
-            if next_page:
-                self.page_count += 1
-                # Construct the absolute URL
-                next_page_url = urljoin(response.url, next_page) 
-                self.logger.info(f"Following next page: {next_page_url}")
+        #     if next_page:
+        #         self.page_count += 1
+        #         # Construct the absolute URL
+        #         next_page_url = urljoin(response.url, next_page) 
+        #         self.logger.info(f"Following next page: {next_page_url}")
                 
-                yield scrapy.Request(# request to the next page
-                    #method='GET',
-                    url=next_page_url,
-                    callback=self.parse
-                )
-            else:
-                self.logger.info("No next page found.")
+        #         yield scrapy.Request(# request to the next page
+        #             #method='GET',
+        #             url=next_page_url,
+        #             callback=self.parse
+        #         )
+        #     else:
+        #         self.logger.info("No next page found.")
         
          #   yield response.follow(next_page, callback=self.parse)       
  
