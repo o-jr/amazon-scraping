@@ -16,20 +16,19 @@ USER_AGENT_LIST = [
 ]
 
 class MlSpider(scrapy.Spider):
-    name = "amazon"
+    name = "amzn"
 
     allowed_domains = ["www.amazon.com.br"]
     start_urls = ["https://www.amazon.com.br/oculos-masculino/s?k=oculos+masculino"] #request get
     
     page_count = 1
-    max_pages = 8 #the maximum number of pages to scrape  
+    max_pages = 8 # Define the maximum number of pages to scrape  
 
     def start_requests(self):
             for url in self.start_urls:
                 yield scrapy.Request(url, headers={'User-Agent': random.choice(USER_AGENT_LIST)}, callback=self.parse)
 
 
-    
 
     def parse(self, response): # callback function parser q trabaLHA C A RESPOSTA DO GET
         if response.status == 503:
@@ -39,22 +38,8 @@ class MlSpider(scrapy.Spider):
         self.logger.info(f"Parsing page {self.page_count}: {response.url}")
         products = response.css('div.a-section.a-spacing-base') # # Select the product containers of all itemns
 
-        # for product in products:
-        #     #prices = product.css('span.a-price-fraction::text').getall()
-        #     #cents = product.css('span.a-price-cents::text').getall()
-        #     yield {
-        #         'brand' : product.css('span.a-size-base-plus.a-color-base::text').get(),
-        #         'price' : product.css('span.a-price-whole::text').get(),
-        #         'rating' : product.css('span.a-size-base.s-underline-text::text').get(),
-        #         'title' : product.xpath('//div//a//h2//span/text()').get() #  = response.css('div a h2 span::text').getall()
-                
-                #'old_price_reais' : prices[0] if len(prices) > 0 else None,
-                #'old_price_cents' : cents[0] if len(prices) > 0 else None,
-                #'new_price_reais' : prices[1] if len(prices) > 1 else None,
-                #'new_price_cents' : cents[1] if len(prices) > 1 else None,
              
                 
-            #}
         for product in products:
             yield {
             'brand': product.css('span.a-size-base-plus.a-color-base::text').get(),
@@ -65,9 +50,9 @@ class MlSpider(scrapy.Spider):
             'page': self.page_count
             }
 
-        self.logger.error("!!!ERROR - for testing purposes!!!")
+        #self.logger.error("!!!ERROR - for testing purposes!!!")
 
-############ NEXT PAGES ###########################
+############ SCRAPY NEXT PAGES ###########################
         # if self.page_count < self.max_pages:
         #     next_page = next_page = response.css('a.s-pagination-next::attr(href)').get()
         #     #next_page = response.css('a.s-pagination-item.s-pagination-next.s-pagination-button::attr(href)').get() # Select the 'href' from the next page button

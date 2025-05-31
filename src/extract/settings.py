@@ -36,7 +36,7 @@ EXTENSIONS = {
     #'extract.extensions.closespider.CloseSpider': 1
 }
 
-SPIDERMON_SPIDER_CLOSE_MONITORS = (
+SPIDERMON_SPIDER_CLOSE_MONITORS = ( # works on all spiders or create a specific one for each spider
     #'extract.spiders.amazon.SpiderMonitor',
     'extract.monitors.SpiderCloseMonitorSuite',
     #'monitors.SpiderCloseMonitorSuite',
@@ -44,7 +44,27 @@ SPIDERMON_SPIDER_CLOSE_MONITORS = (
 
 )
 
+SPIDERMON_PERIODIC_MONITORS = {#to run periodically, e.g. every 30 minutes
+   # 'spidermon.contrib.monitors.periodic.ItemCountMonitor',
+  #  'spidermon.contrib.monitors.periodic.ErrorCountMonitor',
+ #   'spidermon.contrib.monitors.periodic.ItemValidationMonitor',
+    #'extract.monitors.StatusCodeMonitor',  # Custom status code monitor
+    'extract.monitors.PeriodicMonitorSuite':1800000 # 30 minutes,
+}
+SPIDERMON_MAX_EXECUTION_TIME = 100 #100sec
+
 CUSTOM_MIN_STATUS_200 = 10
+SPIDERMON_MAX_ERRORS = 0
+
+ITEM_PIPELINES = { #to able to use the schemas 
+    '"spidermon.contrib.scrapy.pipelines.ItemValidationPipeline"': 800,
+}
+SPIDERMON_VALIDATION_SCHEMAS = ('./extract/schemas/amzn_item.json', ) # Path to your JSON schema
+SPIDERMON_MAX_ITEM_VALIDATION_ERRORS = 0  # Maximum number of validation errors allowed per item
+
+
+
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 1
 

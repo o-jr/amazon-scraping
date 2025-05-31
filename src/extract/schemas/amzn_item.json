@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",    
+  "type": "object",
+  "properties": {
+    "brand": {
+      "description": "Brand of the product",
+      "type": "string"
+    },
+    "price": { 
+      "description": "Price of the product",
+      "type": "integer"
+    },
+    "rating": {
+      "description": "Rating of the product",
+      "type": "string"
+    },
+    "title": {
+      "description": "Title of the product",
+      "type": "string"
+    },
+    "page": {
+      "description": "Page number of the product",
+      "type": "integer"
+    }
+
+  },
+    "required": [
+        "brand", 
+        "price", 
+        "title", 
+        "page"
+    ]
+}
