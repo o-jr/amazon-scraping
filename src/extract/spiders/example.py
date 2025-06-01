@@ -29,6 +29,15 @@ class MlSpider(scrapy.Spider):
                 yield scrapy.Request(url, headers={'User-Agent': random.choice(USER_AGENT_LIST)}, callback=self.parse)
 
 
+    custom_settings = {
+        'DOWNLOAD_DELAY': 10, # Delay between requests to avoid being blocked
+        'RANDOMIZE_DOWNLOAD_DELAY': True, # Randomize the delay to mimic human behavior     
+        "SPIDERMON_SPIDER_CLOSE_MONITORS": [
+             'extract.monitors.SpiderCloseMonitorSuite',
+        ],
+        "SPIDERMON_MAX_ERRORS": 3,  # Maximum number of errors allowed before closing the spider
+        "SPIDERMON_MAX_ITEM_VALIDATION_ERRORS": 1,  # Maximum number of validation errors allowed per item
+    }
 
     def parse(self, response): # callback function parser q trabaLHA C A RESPOSTA DO GET
         if response.status == 503:

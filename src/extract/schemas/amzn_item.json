@@ -1,28 +1,24 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",    
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "brand": {
-      "description": "Brand of the product",
-      "type": "string"
+      "type": "string",
+      "description": "Brand name of the product"
     },
-    "price": { 
-      "description": "Price of the product",
-      "type": "integer"
+    "price": {
+      "type": "string",
+      "description": "Price of the product"
     },
-    "rating": {
-      "description": "Rating of the product",
-      "type": "string"
-    },
+  
     "title": {
-      "description": "Title of the product",
-      "type": "string"
+      "type": "string",
+      "description": "Title of the product"
     },
     "page": {
-      "description": "Page number of the product",
-      "type": "integer"
+      "type": "integer",
+      "description": "Page number from which the product was scraped"
     }
-
   },
     "required": [
         "brand", 

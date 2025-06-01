@@ -1,12 +1,10 @@
 import scrapy
 import random
+import spidermon
 from urllib.parse import urljoin
 from scrapy.exceptions import IgnoreRequest
-#from spidermon import Monitor, MonitorSuite, monitors
-#from spidermon.contrib.scrapy.extensions import Spidermon
-#from spidermon.contrib.extensions import SpiderMonitor
-#from spidermon.contrib.monitors.mixins.stats import SpidermonStatsMixin
-#from spidermon.contrib.scrapy.monitors.base import BaseStatMonitor
+from spidermon import Monitor, MonitorSuite, monitors
+
 
 USER_AGENT_LIST = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
@@ -55,36 +53,50 @@ class MlSpider(scrapy.Spider):
              
                 
             #}
+        # for product in products:
+        #     yield {
+        #     'brand': product.css('span.a-size-base-plus.a-color-base::text').get(),
+        #     'price': product.css('span.a-price-whole::text').get(),
+        #     'rating': product.css('span.a-size-base.s-underline-text::text').get(),
+        #     #'title': product.css('h2 a span::text').get(),
+        #     'title': product.xpath('.//div//a//h2//span/text()').get(),
+        #     'page': self.page_count
+        #     }
         for product in products:
-            yield {
-            'brand': product.css('span.a-size-base-plus.a-color-base::text').get(),
-            'price': product.css('span.a-price-whole::text').get(),
-            'rating': product.css('span.a-size-base.s-underline-text::text').get(),
-            #'title': product.css('h2 a span::text').get(),
-            'title': product.xpath('.//div//a//h2//span/text()').get(),
-            'page': self.page_count
+            item = {
+                'brand': product.css('span.a-size-base-plus.a-color-base::text').get(),
+                'price': product.css('span.a-price-whole::text').get(),
+                'rating': product.css('span.a-size-base.s-underline-text::text').get(),
+                'title': product.xpath('.//div//a//h2//span/text()').get(),
+                'page': self.page_count
             }
 
-        self.logger.error("!!!ERROR - for testing purposes!!!")
+           
+            # if all(item.values()): # Exclude items where any value is None
+            #     yield item
+            if item['brand']:
+                yield item
+
+       # self.logger.error("!!!ERROR - for testing purposes!!!")
 
 ############ NEXT PAGES ###########################
-        # if self.page_count < self.max_pages:
-        #     next_page = next_page = response.css('a.s-pagination-next::attr(href)').get()
-        #     #next_page = response.css('a.s-pagination-item.s-pagination-next.s-pagination-button::attr(href)').get() # Select the 'href' from the next page button
+        if self.page_count < self.max_pages:
+            next_page = next_page = response.css('a.s-pagination-next::attr(href)').get()
+            #next_page = response.css('a.s-pagination-item.s-pagination-next.s-pagination-button::attr(href)').get() # Select the 'href' from the next page button
             
-        #     if next_page:
-        #         self.page_count += 1
-        #         # Construct the absolute URL
-        #         next_page_url = urljoin(response.url, next_page) 
-        #         self.logger.info(f"Following next page: {next_page_url}")
+            if next_page:
+                self.page_count += 1
+                # Construct the absolute URL
+                next_page_url = urljoin(response.url, next_page) 
+                self.logger.info(f"Following next page: {next_page_url}")
                 
-        #         yield scrapy.Request(# request to the next page
-        #             #method='GET',
-        #             url=next_page_url,
-        #             callback=self.parse
-        #         )
-        #     else:
-        #         self.logger.info("No next page found.")
+                yield scrapy.Request(# request to the next page
+                    #method='GET',
+                    url=next_page_url,
+                    callback=self.parse
+                )
+            else:
+                self.logger.info("No next page found.")
         
-         #   yield response.follow(next_page, callback=self.parse)       
+           #yield response.follow(next_page, callback=self.parse)       
  

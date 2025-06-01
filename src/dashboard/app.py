@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 
-conn = sqlite3.connect('../ml-scraping/data/amazon.db')
+conn = sqlite3.connect("./ml-scraping/data/amazon.db")
 
 df = pd.read_sql_query("SELECT * FROM ml_items", conn)
 
@@ -24,10 +24,10 @@ st.title("Amazon Web Scraping - Oculos Masculino")
 col1, col2,col33 = st.columns(3)
 
 total_produtos = df.shape[0]
-col1.metric("Total de Produtos", value=total_produtos, border=True)
+col1.metric("Total Products", value=total_produtos, border=True)
 
 unique_brands = df['brand'].nunique()
-col2.metric("Total de Marcas", value=unique_brands,  border=True)
+col2.metric("Total Brands", value=unique_brands,  border=True)
 
 avg_price = df['price'].mean()
 avg_price = "{:,.2f}".format(avg_price).replace(",", "X").replace(".", ",").replace("X", ".")
@@ -36,8 +36,6 @@ col33.metric("Average Price", value=avg_price, border=True)
 
 with st.expander("See more"):
     colm1, colm2,colm33 = st.columns(3)
-
-    #top_brand = df_non_zero_prices.groupby('brand')['price'].max().sort_values(ascending=False).head(10)
 
     highest_brand = df['brand'].value_counts().idxmax()
     colm1.metric("Highest Frequency Brand", value=highest_brand, border=True)
@@ -67,11 +65,11 @@ column1, joker,column2 = st.columns([3.5,0.3,4.5])
 
 #coll1, coll2, coll3, coll4, coll5 = st.columns([4,2,1,4,2]) 
 with column1:
-    tab1, tab2, tab3 = st.tabs(["🗃 Min","📈 Max"," Mean"])
+    tab1, tab2, tab3 = st.tabs(["📉 Min","📈 Max","➗ Mean"])
     with tab2:
         col1, col2 = st.columns([4,2])
         with col1:
-            st.write("### Marcas mais caras")
+            st.write("### Most Expensive Brands")
             df_non_zero_prices = df[df['rating'] > 0]
             
         with col2:
@@ -87,7 +85,7 @@ with column1:
     with tab1:
         col1, col2 = st.columns([4,2])
         with col1:
-            st.write("### Marcas mais baratas")
+            st.write("### Cheapest Brands")
             df_non_zero_prices = df[df['price'] > 0]
         with col2: 
             low_brand = df_non_zero_prices.groupby('brand')['price'].min().sort_values(ascending=True)
@@ -103,7 +101,7 @@ with column1:
     with tab3:
         col1, col2 = st.columns([4,2])
         with col1:
-            st.subheader("Média por Marca")
+            st.subheader("Average by Brand")
             df_non_zero_prices = df[df['price'] > 0]
             price_by_brand = df_non_zero_prices.groupby('brand')['price'].mean().round(2).sort_values(ascending=False).head(10)
             st.bar_chart(price_by_brand, height= 400)
@@ -117,7 +115,7 @@ with column1:
 with column2:
     col1, col2 = st.columns([4,2])
     with col1:
-        st.subheader("Marcas mais presentes")
+        st.subheader("Most Present Brands")
         # Calculate brand counts and get top 10
         counts = df['brand'].value_counts()
         top10pages_brands = counts.sort_values(ascending=False).head(80)
@@ -164,7 +162,7 @@ st.divider()
 
 cc1, joker, cc2 = st.columns([1.3,0.3,5])
 
-cc1.write("### Marcas mais avaliadas")
+cc1.write("### Most Rated Brands")
 unique_brands = df.groupby('brand')['rating'].mean().reset_index()
 unique_brands['rating'] = unique_brands['rating'].round(0).astype(int)
 cc1.dataframe(unique_brands.nlargest(10, 'rating'), use_container_width=True, hide_index=True)
@@ -174,7 +172,7 @@ cc1.dataframe(unique_brands.nlargest(10, 'rating'), use_container_width=True, hi
 # df_display["Created_at"] = pd.to_datetime(df_display["Created_at"]).dt.strftime("%Y-%m-%d")
 # coll4.dataframe(df_display)
 
-cc2.write("### Todos Produtos")
+cc2.write("### All Products")
 df_display = df[df['price'] > 0]
 df_display = df_display[df_display['brand'].notnull()]
 df_display["Created_at"] = pd.to_datetime(df_display["Created_at"]).dt.strftime("%Y-%m-%d")
