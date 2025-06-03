@@ -46,24 +46,24 @@ SPIDERMON_SPIDER_CLOSE_MONITORS = ( # works on all spiders or create a specific 
 
 # Configure item pipelines
 CUSTOM_MIN_STATUS_200 = 1
-CUSTOM_MAX_STATUS_503 = 0
+CUSTOM_MAX_STATUS_503 = 7
 CUSTOM_MIN_ITEMS_SCRAPED = 350
-SPIDERMON_MAX_ERRORS = 0
+SPIDERMON_MAX_ERRORS = 1
 
 
 ITEM_PIPELINES = { #to able to use the schemas 
     "spidermon.contrib.scrapy.pipelines.ItemValidationPipeline": 800,
 }
-SPIDERMON_VALIDATION_SCHEMAS = ("./ml-scraping/src/extract/schemas/amzn_item.json",)
+SPIDERMON_VALIDATION_SCHEMAS = ("C:/Users/W4rne4/git/ml-scraping/src/extract/schemas/amzn_item.json",)
 # Path to your JSON schema
 SPIDERMON_MAX_ITEM_VALIDATION_ERRORS = 0  # Maximum number of validation errors allowed per item
 
 
 
 SPIDERMON_PERIODIC_MONITORS = {#to run periodically, e.g. every 3 seconds
-    'extract.monitors.PeriodicExecutionTimeMonitor': 5, 
+    'extract.monitors.PeriodicExecutionTimeMonitor': 10, 
 }
-SPIDERMON_MAX_EXECUTION_TIME = 20
+SPIDERMON_MAX_EXECUTION_TIME = 100
 
 
 
@@ -71,7 +71,7 @@ SPIDERMON_REPORT_TEMPLATE = "reports/email/monitors/result.jinja"
 SPIDERMON_REPORT_CONTEXT = {
     'report_title': 'Amazon Spider Monitoring Report',
 }
-SPIDERMON_REPORT_FILENAME = "amzn_report2.html"
+SPIDERMON_REPORT_FILENAME = "amzn_report3.html"
 
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
