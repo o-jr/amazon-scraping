@@ -1,4 +1,4 @@
-##OVERVIEW
+## OVERVIEW
 
 This project implements a web scraping pipeline to collect product data from Amazon Brazil, specifically for men's eyewear products. The pipeline includes data collection, validation, storage, and visualization components.
 
@@ -73,36 +73,6 @@ In essence, the project transforms raw web data into actionable insights while i
 
 This architecture keeps components decoupled, making it easy to update or replace parts (e.g., switch from DuckDB to another database).
 
-+-----------------------------------+
-|  External Source:                 |
-|  Amazon Website                   |
-+-----------------------------------+
-               |
-               | (HTTP Requests)
-               v
-+-----------------------------------+
-|  Scrapy Spider (amazon.py) .JSON |
-|  - Crawls and extracts data      |
-|  - Yields items for processing   |
-+-----------------------------------+
-               |     ^
-               |     | (Real-time monitoring)
-               v     |
-+-----------------------------------+     +-----------------------------------+
-|  Spidermon Monitors (monitors.py) |     |  Data Pipeline (duckdb.py)      |
-|  - Validates item count           |     |  - Cleans and processes data    |
-|  - Checks for errors and time     |     |  - Stores in DuckDB             |
-|  - Generates reports              |     +-----------------------------------+
-+-----------------------------------+              |
-               |                                   v
-               +-----------------------------------+
-               |                                   |
-               v                                   v
-+-----------------------------------+     +-----------------------------------+
-|  DuckDB Database                  |     |  Streamlit Dashboard (app.py)    |
-|  - Stores structured data         |     |  - Queries and visualizes data   |
-|  - Supports querying              |     |  - Interactive BI interface      |
-+-----------------------------------+     +-----------------------------------+
 
 # How to Run This Project
 
